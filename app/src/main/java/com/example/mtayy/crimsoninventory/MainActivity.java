@@ -52,18 +52,22 @@ ArrayList<String> catagories = new ArrayList<String>();
 
         @Override
         protected void onPostExecute(String s) {
-            String[] splitter = s.split("<table class=\"wpinventory_loop wpinventory_loop_all wpinventory_loop_all_table\">");
+            getCatagories(s, "<table class=\"wpinventory_loop wpinventory_loop_all wpinventory_loop_all_table\">", "<span class=\"categories\"><select name=\"inventory_category_id\">" );
+            super.onPostExecute(s);
+        }
+        public void getCatagories(String htmlData, String firstCut, String secondCut){
+            String[] splitter = htmlData.split(firstCut);
             String partOne = splitter[0];
-            String[] splitTwo  = partOne.split("<span class=\"categories\"><select name=\"inventory_category_id\">");
+            String[] splitTwo  = partOne.split(secondCut);
             String catagorie = splitTwo[1];
             Pattern p = Pattern.compile("\">(.*?)</option>");
             Matcher m = p.matcher(catagorie);
-                while(m.find()){
-                    catagories.add(m.group(1));
-                    Log.i("Catagorie", m.group(1));
-                }
-            super.onPostExecute(s);
+            while(m.find()){
+                catagories.add(m.group(1));
+                Log.i("Catagorie", m.group(1));
+            }
         }
+
     }
 
 }
