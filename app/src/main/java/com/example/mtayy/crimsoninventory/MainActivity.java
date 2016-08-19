@@ -18,11 +18,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DownloadInventory invent = new DownloadInventory();
-        invent.execute("http://www.crimsonrobotics.com/inventory-2/#inventory_filter");
+        DownloadData invent = new DownloadData();
+        invent.execute("http://www.crimsonrobotics.com/inventory-2/");
     }
 
-    public class DownloadInventory extends AsyncTask<String, Void, String>{
+    public class DownloadData extends AsyncTask<String, Void, String>{
 
         @Override
         protected String doInBackground(String... urls) {
