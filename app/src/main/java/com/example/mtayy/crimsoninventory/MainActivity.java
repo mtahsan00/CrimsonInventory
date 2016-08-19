@@ -10,10 +10,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-
+ArrayList<String> catagories = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +53,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             String[] splitter = s.split("<table class=\"wpinventory_loop wpinventory_loop_all wpinventory_loop_all_table\">");
-            Log.i("Part 2",splitter[1]);
+            String partOne = splitter[0];
+            String[] splitTwo  = partOne.split("<span class=\"categories\"><select name=\"inventory_category_id\">");
+            String catagorie = splitTwo[1];
+            Pattern p = Pattern.compile("\">(.*?)</option>");
+            Matcher m = p.matcher(catagorie);
+                while(m.find()){
+                    catagories.add(m.group(1));
+                    Log.i("Catagorie", m.group(1));
+                }
             super.onPostExecute(s);
         }
     }
