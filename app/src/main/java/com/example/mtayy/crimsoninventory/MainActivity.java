@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 ArrayList<String> catagories = new ArrayList<String>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,22 +54,27 @@ ArrayList<String> catagories = new ArrayList<String>();
 
         @Override
         protected void onPostExecute(String s) {
-            getCatagories(s, "<table class=\"wpinventory_loop wpinventory_loop_all wpinventory_loop_all_table\">", "<span class=\"categories\"><select name=\"inventory_category_id\">" );
+            String cutOne = "<table class=\"wpinventory_loop wpinventory_loop_all wpinventory_loop_all_table\">";
+            String cutTwo = "<span class=\"categories\"><select name=\"inventory_category_id\">";
+            getCategories(s, cutOne, cutTwo);
             super.onPostExecute(s);
         }
-        public void getCatagories(String htmlData, String firstCut, String secondCut){
-            String[] splitter = htmlData.split(firstCut);
-            String partOne = splitter[0];
-            String[] splitTwo  = partOne.split(secondCut);
-            String catagorie = splitTwo[1];
+        public void getCategories(String htmlData, String firstCut, String secondCut){
+           String partOne = splitString(htmlData, firstCut, 0);
+           String categorie = splitString(partOne, secondCut,1);
             Pattern p = Pattern.compile("\">(.*?)</option>");
-            Matcher m = p.matcher(catagorie);
+            Matcher m = p.matcher(categorie);
             while(m.find()){
                 catagories.add(m.group(1));
-                Log.i("Catagorie", m.group(1));
+                Log.i("Categorie", m.group(1));
             }
         }
 
+        public String splitString(String string,String cut, int part){
+            String[] splitter = string.split(cut);
+            String selected = splitter[part];
+            return selected;
+        }
     }
 
 }
