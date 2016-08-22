@@ -22,8 +22,8 @@ ArrayList<String> catagories = new ArrayList<String>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DownloadData invent = new DownloadData();
-        invent.execute("http://www.crimsonrobotics.com/inventory-2/");
+        DownloadData inventory = new DownloadData();
+        inventory.execute("http://www.crimsonrobotics.com/inventory-2/");
     }
 
     public class DownloadData extends AsyncTask<String, Void, String>{
@@ -54,11 +54,10 @@ ArrayList<String> catagories = new ArrayList<String>();
 
         @Override
         protected void onPostExecute(String s) {
-            String cutOne = "<table class=\"wpinventory_loop wpinventory_loop_all wpinventory_loop_all_table\">";
-            String cutTwo = "<span class=\"categories\"><select name=\"inventory_category_id\">";
-            getCategories(s, cutOne, cutTwo);
+            getCategories(s,"<table class=\"wpinventory_loop wpinventory_loop_all wpinventory_loop_all_table\">","<span class=\"categories\"><select name=\"inventory_category_id\">");
             super.onPostExecute(s);
         }
+
         public void getCategories(String htmlData, String firstCut, String secondCut){
            String partOne = splitString(htmlData, firstCut, 0);
            String categorie = splitString(partOne, secondCut,1);
@@ -68,13 +67,14 @@ ArrayList<String> catagories = new ArrayList<String>();
                 catagories.add(m.group(1));
                 Log.i("Categorie", m.group(1));
             }
-        }
+        } //Method cuts downloaded HTML data in order to retrieve the categories in which the items are separated into.
+
+
+    }
 
         public String splitString(String string,String cut, int part){
             String[] splitter = string.split(cut);
             String selected = splitter[part];
             return selected;
-        }
-    }
-
+    } //Created in order to simplify the HTML splitting process and returns only one of the parts.
 }
